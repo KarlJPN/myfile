@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Splitter - PDFページ分割ツール</title>
+    <meta name="description" content="ブラウザで動作するPDF分割ツール。ページを選択して分割・抽出できます。">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="32" height="32" rx="4" fill="url(#gradient1)"/>
+                    <path d="M12 12h8v16h-8v-16z" fill="rgba(255,255,255,0.9)"/>
+                    <path d="M22 12h6v16h-6v-16z" fill="rgba(255,255,255,0.6)"/>
+                    <defs>
+                        <linearGradient id="gradient1" x1="4" y1="4" x2="36" y2="36">
+                            <stop offset="0%" stop-color="#6366f1"/>
+                            <stop offset="100%" stop-color="#8b5cf6"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>PDF Splitter</h1>
+            </div>
+            <p class="tagline">PDFファイルを簡単に分割・抽出</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section id="upload-section" class="upload-section">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-icon">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32 8L32 40M32 8L20 20M32 8L44 20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 44v8a4 4 0 004 4h40a4 4 0 004-4v-8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h2>PDFファイルをドロップ</h2>
+                    <p>または <span class="browse-link">ファイルを選択</span></p>
+                    <input type="file" id="file-input" accept=".pdf" hidden>
+                </div>
+            </section>
+
+            <!-- Preview Section -->
+            <section id="preview-section" class="preview-section hidden">
+                <div class="toolbar">
+                    <div class="file-info">
+                        <span id="file-name" class="file-name">document.pdf</span>
+                        <span id="page-count" class="page-count">0 ページ</span>
+                    </div>
+                    <div class="toolbar-actions">
+                        <button id="select-all-btn" class="btn btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+                                <path d="M5 9l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            全選択
+                        </button>
+                        <button id="clear-selection-btn" class="btn btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            選択解除
+                        </button>
+                        <button id="new-file-btn" class="btn btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <path d="M9 3v12M3 9h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            新規ファイル
+                        </button>
+                    </div>
+                </div>
+
+                <div class="range-input-container">
+                    <label for="page-range">ページ範囲指定:</label>
+                    <input type="text" id="page-range" class="range-input" placeholder="例: 1-3, 5, 7-10">
+                    <button id="apply-range-btn" class="btn btn-primary btn-sm">適用</button>
+                </div>
+
+                <div id="pages-grid" class="pages-grid">
+                    <!-- Page thumbnails will be inserted here -->
+                </div>
+
+                <div class="action-bar">
+                    <div class="selection-info">
+                        <span id="selected-count">0</span> ページ選択中
+                    </div>
+                    <div class="split-options">
+                        <div class="split-mode">
+                            <label>分割モード:</label>
+                            <select id="split-mode">
+                                <option value="single">選択ページを1つのPDFに</option>
+                                <option value="individual">各ページを個別PDFに</option>
+                            </select>
+                        </div>
+                        <button id="split-btn" class="btn btn-primary btn-lg" disabled>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            分割してダウンロード
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="loading-overlay hidden">
+                <div class="loading-spinner"></div>
+                <p id="loading-text">処理中...</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>すべての処理はブラウザ内で実行されます。ファイルはサーバーにアップロードされません。</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
