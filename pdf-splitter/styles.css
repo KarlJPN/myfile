@@ -8,35 +8,37 @@
     --bg-glass: rgba(30, 30, 50, 0.7);
     --border-color: rgba(255, 255, 255, 0.1);
     --border-hover: rgba(255, 255, 255, 0.2);
-    
+
     --text-primary: #ffffff;
     --text-secondary: #a0a0b0;
     --text-muted: #6b6b7b;
-    
+
     --accent-primary: #6366f1;
     --accent-secondary: #8b5cf6;
     --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    
+
     --success: #22c55e;
     --warning: #f59e0b;
     --error: #ef4444;
-    
+
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
-    
+
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
     --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
-    
+
     --transition-fast: 0.15s ease;
     --transition-normal: 0.25s ease;
     --transition-slow: 0.4s ease;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -63,7 +65,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
+    background:
         radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
         radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
     pointer-events: none;
@@ -555,12 +557,26 @@ body::before {
     border-top: 1px solid var(--border-color);
 }
 
+.footer .credit {
+    margin-top: 0.5rem;
+}
+
+.footer .credit strong {
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
 /* ===================================
    Animations
    =================================== */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes fadeInDown {
@@ -568,6 +584,7 @@ body::before {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -575,12 +592,21 @@ body::before {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ===================================
@@ -590,52 +616,52 @@ body::before {
     .app-container {
         padding: 1rem;
     }
-    
+
     .logo h1 {
         font-size: 1.5rem;
     }
-    
+
     .upload-area {
         padding: 3rem 1.5rem;
     }
-    
+
     .toolbar {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .file-info {
         justify-content: center;
     }
-    
+
     .toolbar-actions {
         justify-content: center;
     }
-    
+
     .pages-grid {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         gap: 1rem;
     }
-    
+
     .action-bar {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .split-options {
         flex-direction: column;
         width: 100%;
     }
-    
+
     .split-mode {
         width: 100%;
         flex-direction: column;
     }
-    
+
     .split-mode select {
         width: 100%;
     }
-    
+
     .btn-lg {
         width: 100%;
         justify-content: center;

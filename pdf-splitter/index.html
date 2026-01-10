@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,18 +10,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 </head>
+
 <body>
     <div class="app-container">
         <header class="header">
             <div class="logo">
                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="4" y="4" width="32" height="32" rx="4" fill="url(#gradient1)"/>
-                    <path d="M12 12h8v16h-8v-16z" fill="rgba(255,255,255,0.9)"/>
-                    <path d="M22 12h6v16h-6v-16z" fill="rgba(255,255,255,0.6)"/>
+                    <rect x="4" y="4" width="32" height="32" rx="4" fill="url(#gradient1)" />
+                    <path d="M12 12h8v16h-8v-16z" fill="rgba(255,255,255,0.9)" />
+                    <path d="M22 12h6v16h-6v-16z" fill="rgba(255,255,255,0.6)" />
                     <defs>
                         <linearGradient id="gradient1" x1="4" y1="4" x2="36" y2="36">
-                            <stop offset="0%" stop-color="#6366f1"/>
-                            <stop offset="100%" stop-color="#8b5cf6"/>
+                            <stop offset="0%" stop-color="#6366f1" />
+                            <stop offset="100%" stop-color="#8b5cf6" />
                         </linearGradient>
                     </defs>
                 </svg>
@@ -35,8 +37,10 @@
                 <div class="upload-area" id="upload-area">
                     <div class="upload-icon">
                         <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M32 8L32 40M32 8L20 20M32 8L44 20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M8 44v8a4 4 0 004 4h40a4 4 0 004-4v-8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M32 8L32 40M32 8L20 20M32 8L44 20" stroke="currentColor" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M8 44v8a4 4 0 004 4h40a4 4 0 004-4v-8" stroke="currentColor" stroke-width="3"
+                                stroke-linecap="round" />
                         </svg>
                     </div>
                     <h2>PDFファイルをドロップ</h2>
@@ -55,20 +59,24 @@
                     <div class="toolbar-actions">
                         <button id="select-all-btn" class="btn btn-secondary">
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
-                                <path d="M5 9l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                    stroke-width="2" />
+                                <path d="M5 9l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
                             </svg>
                             全選択
                         </button>
                         <button id="clear-selection-btn" class="btn btn-secondary">
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+                                <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                    stroke-width="2" />
                             </svg>
                             選択解除
                         </button>
                         <button id="new-file-btn" class="btn btn-secondary">
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                <path d="M9 3v12M3 9h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M9 3v12M3 9h12" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
                             </svg>
                             新規ファイル
                         </button>
@@ -99,7 +107,8 @@
                         </div>
                         <button id="split-btn" class="btn btn-primary btn-lg" disabled>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
                             </svg>
                             分割してダウンロード
                         </button>
@@ -116,9 +125,11 @@
 
         <footer class="footer">
             <p>すべての処理はブラウザ内で実行されます。ファイルはサーバーにアップロードされません。</p>
+            <p class="credit">Created by <strong>Koki Mori</strong></p>
         </footer>
     </div>
 
     <script src="app.js"></script>
 </body>
+
 </html>
