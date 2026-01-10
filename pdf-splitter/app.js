@@ -34,7 +34,8 @@ const elements = {
     pageRange: document.getElementById('page-range'),
     applyRangeBtn: document.getElementById('apply-range-btn'),
     loadingOverlay: document.getElementById('loading-overlay'),
-    loadingText: document.getElementById('loading-text')
+    loadingText: document.getElementById('loading-text'),
+    outputFilename: document.getElementById('output-filename')
 };
 
 // ===================================
@@ -109,6 +110,10 @@ async function handleFileUpload(file) {
         // Update UI
         elements.fileName.textContent = state.fileName;
         elements.pageCount.textContent = `${state.totalPages} ページ`;
+
+        // Set default output filename (without .pdf extension)
+        const defaultName = state.fileName.replace('.pdf', '');
+        elements.outputFilename.value = defaultName;
 
         // Render page thumbnails
         await renderThumbnails();
@@ -319,17 +324,27 @@ async function createSinglePDF(srcDoc, pages) {
     }
 
     const pdfBytes = await newDoc.save();
-    const baseName = state.fileName.replace('.pdf', '');
-    downloadFile(pdfBytes, `${baseName}_split.pdf`, 'application/pdf');
+    const customName = getOutputFilename();
+    downloadFile(pdfBytes, `${customName}.pdf`, 'application/pdf');
+}
+
+// Get output filename from input field
+function getOutputFilename() {
+    const customName = elements.outputFilename.value.trim();
+    if (customName) {
+        // Remove .pdf extension if user included it
+        return customName.replace(/\.pdf$/i, '');
+    }
+    // Fallback to original filename
+    return state.fileName.replace('.pdf', '');
 }
 
 async function createIndividualPDFs(srcDoc, pages) {
     const { PDFDocument } = PDFLib;
-    const baseName = state.fileName.replace('.pdf', '');
+    const baseName = getOutputFilename();
 
-    // If more than one file, create a zip
+    // If more than one file, add sequential numbering
     if (pages.length > 1) {
-        // For simplicity, download each file individually
         for (let i = 0; i < pages.length; i++) {
             const pageNum = pages[i];
             elements.loadingText.textContent = `ページ ${pageNum} を処理中... (${i + 1}/${pages.length})`;
@@ -339,7 +354,8 @@ async function createIndividualPDFs(srcDoc, pages) {
             newDoc.addPage(copiedPage);
 
             const pdfBytes = await newDoc.save();
-            downloadFile(pdfBytes, `${baseName}_page${pageNum}.pdf`, 'application/pdf');
+            // Use sequential numbering: a_1, a_2, a_3...
+            downloadFile(pdfBytes, `${baseName}_${i + 1}.pdf`, 'application/pdf');
 
             // Small delay between downloads
             await new Promise(resolve => setTimeout(resolve, 300));
@@ -351,7 +367,7 @@ async function createIndividualPDFs(srcDoc, pages) {
         newDoc.addPage(copiedPage);
 
         const pdfBytes = await newDoc.save();
-        downloadFile(pdfBytes, `${baseName}_page${pageNum}.pdf`, 'application/pdf');
+        downloadFile(pdfBytes, `${baseName}.pdf`, 'application/pdf');
     }
 }
 

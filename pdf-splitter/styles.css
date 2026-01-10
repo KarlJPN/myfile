@@ -461,6 +461,39 @@ body::before {
     border-color: var(--accent-primary);
 }
 
+/* Filename Input */
+.filename-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filename-input-group label {
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.filename-input {
+    padding: 0.75rem 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    min-width: 180px;
+    transition: all var(--transition-fast);
+}
+
+.filename-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.filename-input::placeholder {
+    color: var(--text-muted);
+}
+
 /* ===================================
    Buttons
    =================================== */
@@ -659,6 +692,15 @@ body::before {
     }
 
     .split-mode select {
+        width: 100%;
+    }
+
+    .filename-input-group {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .filename-input {
         width: 100%;
     }
 
