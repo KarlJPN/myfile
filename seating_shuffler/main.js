@@ -123,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
         printTitle.textContent = className; // 印刷用（クラス名のみ）
         resultHeader.style.display = 'flex';
         podiumIndicator.style.display = 'block';
-        seatDirection.style.display = 'block';
 
         generateSeats(totalSeats, columns, seatsPerColumn);
     });
@@ -210,6 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     seat.addEventListener('dragenter', handleDragEnter);
                     seat.addEventListener('dragleave', handleDragLeave);
                     seat.addEventListener('drop', handleDrop);
+
+                    // タッチイベント（iPad/タブレット対応）
+                    seat.addEventListener('touchstart', handleTouchStart, { passive: false });
+                    seat.addEventListener('touchmove', handleTouchMove, { passive: false });
+                    seat.addEventListener('touchend', handleTouchEnd, { passive: false });
                 } else {
                     // Empty placeholder to maintain grid structure
                     seat.className = 'seat-placeholder';
@@ -286,5 +290,120 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (sourceSeat) sourceSeat.classList.remove('swapped');
             }, 300);
         }
+    }
+
+    // ========================================
+    // タッチイベント対応（iPad/タブレット用）
+    // ========================================
+    let touchDraggedSeat = null;
+    let touchClone = null;
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    function handleTouchStart(e) {
+        if (!this.classList.contains('seat')) return;
+
+        e.preventDefault();
+        touchDraggedSeat = this;
+
+        const touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+
+        // ドラッグ中の視覚的フィードバック
+        this.classList.add('dragging');
+
+        // ドラッグ中に表示するクローンを作成
+        touchClone = this.cloneNode(true);
+        touchClone.classList.add('touch-clone');
+        touchClone.style.position = 'fixed';
+        touchClone.style.left = `${touch.clientX - 40}px`;
+        touchClone.style.top = `${touch.clientY - 40}px`;
+        touchClone.style.width = '80px';
+        touchClone.style.height = '80px';
+        touchClone.style.pointerEvents = 'none';
+        touchClone.style.zIndex = '1000';
+        touchClone.style.opacity = '0.9';
+        touchClone.style.transform = 'scale(1.1)';
+        touchClone.style.boxShadow = '0 10px 25px rgba(0,0,0,0.3)';
+        document.body.appendChild(touchClone);
+    }
+
+    function handleTouchMove(e) {
+        if (!touchDraggedSeat || !touchClone) return;
+
+        e.preventDefault();
+        const touch = e.touches[0];
+
+        // クローンを指の位置に追従させる
+        touchClone.style.left = `${touch.clientX - 40}px`;
+        touchClone.style.top = `${touch.clientY - 40}px`;
+
+        // 現在タッチしている要素を検出
+        // クローンを一時的に非表示にして下の要素を取得
+        touchClone.style.display = 'none';
+        const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+        touchClone.style.display = '';
+
+        // すべてのdrag-overクラスを削除
+        document.querySelectorAll('.seat.drag-over').forEach(seat => {
+            seat.classList.remove('drag-over');
+        });
+
+        // ドロップ先の座席をハイライト
+        if (elementBelow) {
+            const targetSeat = elementBelow.closest('.seat');
+            if (targetSeat && targetSeat !== touchDraggedSeat && targetSeat.classList.contains('seat')) {
+                targetSeat.classList.add('drag-over');
+            }
+        }
+    }
+
+    function handleTouchEnd(e) {
+        if (!touchDraggedSeat) return;
+
+        e.preventDefault();
+
+        // クローンを削除
+        if (touchClone) {
+            touchClone.remove();
+            touchClone = null;
+        }
+
+        // ドラッグスタイルを削除
+        touchDraggedSeat.classList.remove('dragging');
+
+        // すべてのdrag-overクラスを削除
+        const dragOverSeat = document.querySelector('.seat.drag-over');
+        document.querySelectorAll('.seat.drag-over').forEach(seat => {
+            seat.classList.remove('drag-over');
+        });
+
+        // ドロップ先が有効な座席かチェック
+        if (dragOverSeat && dragOverSeat !== touchDraggedSeat) {
+            // 座席番号を入れ替え
+            const draggedNumber = touchDraggedSeat.dataset.seatNumber;
+            const targetNumber = dragOverSeat.dataset.seatNumber;
+
+            // 番号を交換
+            touchDraggedSeat.querySelector('.number').textContent = targetNumber;
+            touchDraggedSeat.dataset.seatNumber = targetNumber;
+
+            dragOverSeat.querySelector('.number').textContent = draggedNumber;
+            dragOverSeat.dataset.seatNumber = draggedNumber;
+
+            // 入れ替えアニメーション
+            dragOverSeat.classList.add('swapped');
+            touchDraggedSeat.classList.add('swapped');
+
+            const targetSeat = dragOverSeat;
+            const sourceSeat = touchDraggedSeat;
+            setTimeout(() => {
+                targetSeat.classList.remove('swapped');
+                if (sourceSeat) sourceSeat.classList.remove('swapped');
+            }, 300);
+        }
+
+        touchDraggedSeat = null;
     }
 });

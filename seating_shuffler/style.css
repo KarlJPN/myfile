@@ -321,6 +321,17 @@ button#generateBtn:active {
     }
 }
 
+/* タッチクローン（iPad/タブレット用） */
+.touch-clone {
+    border-radius: 12px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: none;
+}
+
 @keyframes popIn {
     to {
         opacity: 1;
@@ -429,4 +440,25 @@ button#generateBtn:active {
 /* 通常表示時は印刷用タイトルを非表示 */
 .print-title {
     display: none;
+}
+
+/* Footer */
+.app-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.app-footer strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+@media print {
+    .app-footer {
+        display: none;
+    }
 }
